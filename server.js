@@ -45,4 +45,38 @@ app.post("/send-message", async (req, res) => {
   }
 });
 
+// WhatsApp Webhook Verification
+app.get("/webhook", (req, res) => {
+  const VERIFY_TOKEN = "desitestt1";
+
+  const mode = req.query["hub.mode"];
+  const token = req.query["hub.verify_token"];
+  const challenge = req.query["hub.challenge"];
+
+  if (mode && token === VERIFY_TOKEN) {
+    console.log("Webhook verified!");
+    res.status(200).send(challenge);
+  } else {
+    res.status(403).send("Verification failed");
+  }
+});
+
+// Receiving WhatsApp Messages
+app.post("/webhook", (req, res) => {
+  console.log("Received WhatsApp Message:", JSON.stringify(req.body, null, 2));
+
+  if (req.body.object === "whatsapp_business_account") {
+    req.body.entry.forEach((entry) => {
+      entry.changes.forEach((change) => {
+        if (change.value.messages) {
+          const message = change.value.messages[0];
+          console.log("New message:", message);
+        }
+      });
+    });
+  }
+
+  res.sendStatus(200);
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
