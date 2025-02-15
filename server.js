@@ -14,6 +14,10 @@ const WHATSAPP_API_URL = "https://graph.facebook.com/v17.0";
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'Hello, World!' });
+});
+
 app.post("/send-message", async (req, res) => {
   const { to, message } = req.body;
 
