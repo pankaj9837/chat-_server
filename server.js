@@ -18,6 +18,9 @@ app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello, World!' });
 });
 
+const receivedMessages = [];
+
+// ✅ 1. API to Send WhatsApp Messages
 app.post("/send-message", async (req, res) => {
   const { to, message } = req.body;
 
@@ -41,11 +44,11 @@ app.post("/send-message", async (req, res) => {
 
     res.json({ success: true, response: response.data });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.response.data });
+    res.status(500).json({ success: false, error: error.response?.data });
   }
 });
 
-// WhatsApp Webhook Verification
+// ✅ 2. Webhook Verification (Meta Calls This First)
 app.get("/webhook", (req, res) => {
   const VERIFY_TOKEN = "desitestt1";
 
@@ -61,7 +64,7 @@ app.get("/webhook", (req, res) => {
   }
 });
 
-// Receiving WhatsApp Messages
+// ✅ 3. Webhook for Receiving WhatsApp Messages
 app.post("/webhook", (req, res) => {
   console.log("Received WhatsApp Message:", JSON.stringify(req.body, null, 2));
 
@@ -70,7 +73,14 @@ app.post("/webhook", (req, res) => {
       entry.changes.forEach((change) => {
         if (change.value.messages) {
           const message = change.value.messages[0];
-          console.log("New message:", message);
+          const newMessage = {
+            from: message.from,
+            text: message.text?.body || "No text",
+            timestamp: message.timestamp,
+          };
+
+          receivedMessages.push(newMessage);
+          console.log("New message stored:", newMessage);
         }
       });
     });
@@ -79,4 +89,10 @@ app.post("/webhook", (req, res) => {
   res.sendStatus(200);
 });
 
+// ✅ 4. API to Retrieve Stored Messages
+app.get("/messages", (req, res) => {
+  res.json(receivedMessages);
+});
+
+// Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
