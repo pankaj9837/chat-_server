@@ -43,7 +43,7 @@ app.post("/send-message", async (req, res) => {
     );
     const newMessage = {
       to,
-      text: message?message || "No text",
+      text: message ,
       timestamp: message.timestamp,
     };
     receivedMessages.push(newMessage);
