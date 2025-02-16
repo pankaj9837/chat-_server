@@ -53,7 +53,7 @@ const newMessage = {
       to,
       text: message ,
       imageUrl,
-      timestamp:Math.floor(Date.now() / 1000);,
+      timestamp:Math.floor(Date.now() / 1000),
     };
     receivedMessages.push(newMessage);
     console.log("New message stored:", newMessage);
