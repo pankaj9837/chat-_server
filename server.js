@@ -70,9 +70,35 @@ app.get("/webhook", (req, res) => {
     res.status(403).send("Verification failed");
   }
 });
+const fetchWhatsAppMedia = async (mediaId, callback) => {
+  try {
+    // Step 1: Get Media URL
+    const mediaResponse = await axios.get(
+      `https://graph.facebook.com/v17.0/${mediaId}`,
+      {
+        headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
+      }
+    );
+    const mediaUrl = mediaResponse.data.url;
 
-// ✅ 3. Webhook for Receiving WhatsApp Messages
-app.post("/webhook", (req, res) => {
+    // Step 2: Download Image
+    const imageResponse = await axios.get(mediaUrl, {
+      headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
+      responseType: "arraybuffer",
+    });
+
+    const imageBase64 = Buffer.from(imageResponse.data, "binary").toString("base64");
+    const imageUrl = `data:image/jpeg;base64,${imageBase64}`;
+
+    callback(imageUrl);
+  } catch (error) {
+    console.error("Error fetching image:", error);
+    callback(null);
+  }
+};
+
+
+app.post("/webhook", async (req, res) => {
   console.log("Received WhatsApp Message:", JSON.stringify(req.body, null, 2));
 
   if (req.body.object === "whatsapp_business_account") {
@@ -80,14 +106,21 @@ app.post("/webhook", (req, res) => {
       entry.changes.forEach((change) => {
         if (change.value.messages) {
           const message = change.value.messages[0];
-          const newMessage = {
-            from: message.from,
-            text: message.text?.body || "No text",
-            timestamp: message.timestamp,
-          };
+          const timestamp = new Date(message.timestamp * 1000).toLocaleString();
+          let receivedMsg = { from: message.from, timestamp };
 
-          receivedMessages.push(newMessage);
-          console.log("New message stored:", newMessage);
+          if (message.type === "text") {
+            receivedMsg.text = message.text.body;
+          } else if (message.type === "image") {
+            const mediaId = message.image.id;
+            receivedMsg.imageUrl = `Fetching image...`;
+            fetchWhatsAppMedia(mediaId, (imageUrl) => {
+              receivedMsg.imageUrl = imageUrl;
+            });
+          }
+
+          receivedMessages.push(receivedMsg);
+          console.log("Stored Message:", receivedMsg);
         }
       });
     });
@@ -95,6 +128,31 @@ app.post("/webhook", (req, res) => {
 
   res.sendStatus(200);
 });
+
+// // ✅ 3. Webhook for Receiving WhatsApp Messages
+// app.post("/webhook", (req, res) => {
+//   console.log("Received WhatsApp Message:", JSON.stringify(req.body, null, 2));
+
+//   if (req.body.object === "whatsapp_business_account") {
+//     req.body.entry.forEach((entry) => {
+//       entry.changes.forEach((change) => {
+//         if (change.value.messages) {
+//           const message = change.value.messages[0];
+//           const newMessage = {
+//             from: message.from,
+//             text: message.text?.body || "No text",
+//             timestamp: message.timestamp,
+//           };
+
+//           receivedMessages.push(newMessage);
+//           console.log("New message stored:", newMessage);
+//         }
+//       });
+//     });
+//   }
+
+//   res.sendStatus(200);
+// });
 
 // ✅ 4. API to Retrieve Stored Messages
 app.get("/messages", (req, res) => {
