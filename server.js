@@ -22,18 +22,26 @@ const receivedMessages = [];
 
 // ✅ 1. API to Send WhatsApp Messages
 app.post("/send-message", async (req, res) => {
-  const { to, message } = req.body;
+  const { to, message, imageUrl } = req.body; // Accept `imageUrl` for sending images
+
+  let payload = {
+    messaging_product: "whatsapp",
+    recipient_type: "individual",
+    to,
+  };
+
+  if (imageUrl) {
+    payload.type = "image";
+    payload.image = { link: imageUrl }; // Hosted image URL
+  } else {
+    payload.type = "text";
+    payload.text = { body: message };
+  }
 
   try {
     const response = await axios.post(
       `${WHATSAPP_API_URL}/${PHONE_NUMBER_ID}/messages`,
-      {
-        messaging_product: "whatsapp",
-        recipient_type: "individual",
-        to,
-        type: "text",
-        text: { body: message },
-      },
+      payload,
       {
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -41,19 +49,13 @@ app.post("/send-message", async (req, res) => {
         },
       }
     );
-    const newMessage = {
-      to,
-      text: message ,
-      timestamp:Math.floor(Date.now() / 1000),
-    };
-    receivedMessages.push(newMessage);
-    console.log("New message stored:", newMessage);
 
     res.json({ success: true, response: response.data });
   } catch (error) {
     res.status(500).json({ success: false, error: error.response?.data });
   }
 });
+
 
 // ✅ 2. Webhook Verification (Meta Calls This First)
 app.get("/webhook", (req, res) => {
@@ -130,30 +132,6 @@ app.post("/webhook", async (req, res) => {
   res.sendStatus(200);
 });
 
-// // ✅ 3. Webhook for Receiving WhatsApp Messages
-// app.post("/webhook", (req, res) => {
-//   console.log("Received WhatsApp Message:", JSON.stringify(req.body, null, 2));
-
-//   if (req.body.object === "whatsapp_business_account") {
-//     req.body.entry.forEach((entry) => {
-//       entry.changes.forEach((change) => {
-//         if (change.value.messages) {
-//           const message = change.value.messages[0];
-//           const newMessage = {
-//             from: message.from,
-//             text: message.text?.body || "No text",
-//             timestamp: message.timestamp,
-//           };
-
-//           receivedMessages.push(newMessage);
-//           console.log("New message stored:", newMessage);
-//         }
-//       });
-//     });
-//   }
-
-//   res.sendStatus(200);
-// });
 
 // ✅ 4. API to Retrieve Stored Messages
 app.get("/messages", (req, res) => {
