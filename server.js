@@ -20,28 +20,65 @@ app.get('/api/hello', (req, res) => {
 
 const receivedMessages = [];
 
+// // ✅ 1. API to Send WhatsApp Messages
+// app.post("/send-message", async (req, res) => {
+//   const { to, message, imageUrl } = req.body; // Accept `imageUrl` for sending images
+
+//   let payload = {
+//     messaging_product: "whatsapp",
+//     recipient_type: "individual",
+//     to,
+//     type = "text",
+//     text = { body: message },
+//   };
+
+//   if (imageUrl) {
+//     payload.type = "image";
+//     payload.image = { link: imageUrl }; // Hosted image URL
+//   } else {
+//     payload.type = "text";
+//     payload.text = { body: message };
+//   }
+
+//   try {
+//     const response = await axios.post(
+//       `${WHATSAPP_API_URL}/${PHONE_NUMBER_ID}/messages`,
+//       payload,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${ACCESS_TOKEN}`,
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
+// // const newMessage = {
+// //       to,
+// //       text: message ,
+// //       imageUrl,
+// //       timestamp:Math.floor(Date.now() / 1000),
+// //     };
+// //     receivedMessages.push(newMessage);
+// //     console.log("New message stored:", newMessage);
+//     res.json({ success: true, response: response.data });
+//   } catch (error) {
+//     res.status(500).json({ success: false, error: error.response?.data });
+//   }
+// });
+
 // ✅ 1. API to Send WhatsApp Messages
 app.post("/send-message", async (req, res) => {
-  const { to, message, imageUrl } = req.body; // Accept `imageUrl` for sending images
-
-  let payload = {
-    messaging_product: "whatsapp",
-    recipient_type: "individual",
-    to,
-  };
-
-  if (imageUrl) {
-    payload.type = "image";
-    payload.image = { link: imageUrl }; // Hosted image URL
-  } else {
-    payload.type = "text";
-    payload.text = { body: message };
-  }
+  const { to, message } = req.body;
 
   try {
     const response = await axios.post(
       `${WHATSAPP_API_URL}/${PHONE_NUMBER_ID}/messages`,
-      payload,
+      {
+        messaging_product: "whatsapp",
+        recipient_type: "individual",
+        to,
+        type: "text",
+        text: { body: message },
+      },
       {
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -49,14 +86,14 @@ app.post("/send-message", async (req, res) => {
         },
       }
     );
-// const newMessage = {
-//       to,
-//       text: message ,
-//       imageUrl,
-//       timestamp:Math.floor(Date.now() / 1000),
-//     };
-//     receivedMessages.push(newMessage);
-//     console.log("New message stored:", newMessage);
+    const newMessage = {
+      to,
+      text: message.text?.body || "No text",
+      timestamp:Math.floor(Date.now() / 1000),
+    };
+    receivedMessages.push(newMessage);
+    console.log("New message stored:", newMessage);
+
     res.json({ success: true, response: response.data });
   } catch (error) {
     res.status(500).json({ success: false, error: error.response?.data });
