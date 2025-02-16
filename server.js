@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 const WHATSAPP_API_URL = "https://graph.facebook.com/v17.0";
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
-const ACCESS_TOKEN = 'EAAJJvHiFZCysBOZCq9mxLJeZAZAss4gv7L4i56j4BNONWT4UM0NzyWkahn08ZAVOOU3m8e0GMs9HKsxuZAPVxYJcRzxD19Yr89JkJfZBUxyu8OJwDAxTC9mYNM3FgSROaDi4F5e22yZBQv7QA1KDaWez0srpmtwuf9k5BfCf4HoVBgPbmV3PdLnht9ywtdEZBEMjD3HjvYjijaqdTCJN6sITJ4WykFL8ZD';
+const ACCESS_TOKEN = 'EAAJJvHiFZCysBO7lovaCrpZCjPwUoJ28ARbbezucRDPDRWLHSafZBT4hqgpeLICBsZCfTaivyzEop0nETJLWI4uCZAZBOqodI2LhTZBsURELxqGZBzZC4Q5X4kEWUp3ZBOcs89hvbKa3awHg7ALN9YsL7S7nRXtXR6jlsfx3uRZAdoBzi9XubzIxc48qS18kUMAHqbeHD5M3MNUPXxCRp2GsmOxeY6WNI4ZD';
 
 app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello, World!' });
