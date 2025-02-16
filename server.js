@@ -44,7 +44,7 @@ app.post("/send-message", async (req, res) => {
     const newMessage = {
       to,
       text: message ,
-      timestamp: message.timestamp,
+      timestamp:Math.floor(Date.now() / 1000),
     };
     receivedMessages.push(newMessage);
     console.log("New message stored:", newMessage);
