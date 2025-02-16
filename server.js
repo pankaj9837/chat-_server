@@ -124,7 +124,7 @@ app.post("/webhook", async (req, res) => {
       entry.changes.forEach((change) => {
         if (change.value.messages) {
           const message = change.value.messages[0];
-          const timestamp = new Date(message.timestamp * 1000).toLocaleString();
+          const timestamp = message.timestamp
           let receivedMsg = { from: message.from, timestamp };
 
           if (message.type === "text") {
