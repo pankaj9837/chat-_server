@@ -28,8 +28,6 @@ app.post("/send-message", async (req, res) => {
     messaging_product: "whatsapp",
     recipient_type: "individual",
     to,
-    type = "text",
-    text = { body: message },
   };
 
   if (imageUrl) {
