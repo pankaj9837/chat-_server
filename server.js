@@ -76,23 +76,24 @@ const fetchWhatsAppMedia = async (mediaId, callback) => {
     const mediaResponse = await axios.get(
       `https://graph.facebook.com/v17.0/${mediaId}`,
       {
-        headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
+        headers: { Authorization: `Bearer ${ACCESS_TOKEN}` }, // Ensure token is correct
       }
     );
-    const mediaUrl = mediaResponse.data.url;
+    const mediaUrl = mediaResponse.data.url; // Get media download URL
 
     // Step 2: Download Image
     const imageResponse = await axios.get(mediaUrl, {
-      headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
-      responseType: "arraybuffer",
+      headers: { Authorization: `Bearer ${ACCESS_TOKEN}` }, // Required for fetching media
+      responseType: "arraybuffer", // Binary response for image
     });
 
+    // Convert to base64
     const imageBase64 = Buffer.from(imageResponse.data, "binary").toString("base64");
     const imageUrl = `data:image/jpeg;base64,${imageBase64}`;
 
     callback(imageUrl);
   } catch (error) {
-    console.error("Error fetching image:", error);
+    console.error("Error fetching image:", error.response?.data || error.message);
     callback(null);
   }
 };
