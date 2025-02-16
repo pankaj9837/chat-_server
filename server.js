@@ -41,6 +41,13 @@ app.post("/send-message", async (req, res) => {
         },
       }
     );
+    const newMessage = {
+      to,
+      text: message.text?.body || "No text",
+      timestamp: message.timestamp,
+    };
+    receivedMessages.push(newMessage);
+    console.log("New message stored:", newMessage);
 
     res.json({ success: true, response: response.data });
   } catch (error) {
