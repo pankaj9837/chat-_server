@@ -80,33 +80,40 @@ app.get("/webhook", (req, res) => {
     res.status(403).send("Verification failed");
   }
 });
-const fetchWhatsAppMedia = async (mediaId, callback) => {
+const fetchWhatsAppMedia = async (mediaId, mediaType, callback) => {
   try {
     // Step 1: Get Media URL
     const mediaResponse = await axios.get(
       `https://graph.facebook.com/v17.0/${mediaId}`,
       {
-        headers: { Authorization: `Bearer ${ACCESS_TOKEN}` }, // Ensure token is correct
+        headers: { Authorization: `Bearer ${ACCESS_TOKEN}` }, // Ensure the token is correct
       }
     );
+
     const mediaUrl = mediaResponse.data.url; // Get media download URL
 
-    // Step 2: Download Image
-    const imageResponse = await axios.get(mediaUrl, {
-      headers: { Authorization: `Bearer ${ACCESS_TOKEN}` }, // Required for fetching media
-      responseType: "arraybuffer", // Binary response for image
-    });
+    if (mediaType === "image") {
+      // Step 2: Download Image
+      const imageResponse = await axios.get(mediaUrl, {
+        headers: { Authorization: `Bearer ${ACCESS_TOKEN}` }, // Required for fetching media
+        responseType: "arraybuffer", // Binary response for image
+      });
 
-    // Convert to base64
-    const imageBase64 = Buffer.from(imageResponse.data, "binary").toString("base64");
-    const imageUrl = `data:image/jpeg;base64,${imageBase64}`;
+      // Convert to base64
+      const imageBase64 = Buffer.from(imageResponse.data, "binary").toString("base64");
+      const imageUrl = `data:image/jpeg;base64,${imageBase64}`;
 
-    callback(imageUrl);
+      callback(imageUrl);
+    } else {
+      // Step 2: Return document URL (for PDFs, Docs, etc.)
+      callback(mediaUrl);
+    }
   } catch (error) {
-    console.error("Error fetching image:", error.response?.data || error.message);
+    console.error(`Error fetching ${mediaType}:`, error.response?.data || error.message);
     callback(null);
   }
 };
+
 
 
 app.post("/webhook", async (req, res) => {
@@ -125,8 +132,17 @@ app.post("/webhook", async (req, res) => {
           } else if (message.type === "image") {
             const mediaId = message.image.id;
             receivedMsg.imageUrl = `Fetching image...`;
-            fetchWhatsAppMedia(mediaId, (imageUrl) => {
+            fetchWhatsAppMedia(mediaId,"image",(imageUrl) => {
               receivedMsg.imageUrl = imageUrl;
+            });
+          }else if (message.type === "document") {
+            const mediaId = message.document.id;
+            console.log("Received Document ID:", mediaId);
+
+            // Fetch the document URL
+            fetchWhatsAppMedia(mediaId, "document", (documentUrl) => {
+              console.log("Document URL:", documentUrl);
+              receivedMsg.documentUrl = documentUrl;
             });
           }
 
