@@ -49,14 +49,14 @@ app.post("/send-message", async (req, res) => {
         },
       }
     );
-const newMessage = {
-      to,
-      text: message ,
-      imageUrl,
-      timestamp:Math.floor(Date.now() / 1000),
-    };
-    receivedMessages.push(newMessage);
-    console.log("New message stored:", newMessage);
+// const newMessage = {
+//       to,
+//       text: message ,
+//       imageUrl,
+//       timestamp:Math.floor(Date.now() / 1000),
+//     };
+//     receivedMessages.push(newMessage);
+//     console.log("New message stored:", newMessage);
     res.json({ success: true, response: response.data });
   } catch (error) {
     res.status(500).json({ success: false, error: error.response?.data });
