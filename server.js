@@ -22,7 +22,7 @@ const receivedMessages = [];
 
 // ✅ 1. API to Send WhatsApp Messages
 app.post("/send-message", async (req, res) => {
-  const { to, message, imageUrl } = req.body; // Accept `imageUrl` for sending images
+  const { to, message, imageUrl, documentUrl } = req.body; // Accept `imageUrl` for sending images
 
   let payload = {
     messaging_product: "whatsapp",
@@ -36,6 +36,11 @@ app.post("/send-message", async (req, res) => {
   } else {
     payload.type = "text";
     payload.text = { body: message };
+  }
+
+  if(documentUrl){
+    payload.type = "document";
+    payload.image = { link: documentUrl };
   }
 
   try {
@@ -53,6 +58,7 @@ const newMessage = {
       to,
       text: message ,
       imageUrl,
+      documentUrl,
       timestamp:Math.floor(Date.now() / 1000),
     };
     receivedMessages.push(newMessage);
