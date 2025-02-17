@@ -19,6 +19,7 @@ app.get('/api/hello', (req, res) => {
 });
 
 const receivedMessages = [];
+let knownNumbers = new Set();
 
 // ✅ 1. API to Send WhatsApp Messages
 app.post("/send-message", async (req, res) => {
@@ -126,6 +127,35 @@ const fetchWhatsAppMedia = async (mediaId, mediaType, callback) => {
   }
 };
 
+// Function to Trigger WhatsApp Flow
+const triggerWhatsAppFlow = async (to) => {
+  try {
+    const response = await axios.post(
+      `https://graph.facebook.com/v17.0/${PHONE_NUMBER_ID}/messages`,
+      {
+        messaging_product: "whatsapp",
+        recipient_type: "individual",
+        to,
+        type: "template",
+        template: {
+          name: "duniyape_welcome_you", // Replace with your flow template name
+          language: { code: "en_US" },
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("Flow Triggered:", response.data);
+  } catch (error) {
+    console.error("Error triggering flow:", error.response?.data || error.message);
+  }
+};
+
 
 
 app.post("/webhook", async (req, res) => {
@@ -138,6 +168,16 @@ app.post("/webhook", async (req, res) => {
           const message = change.value.messages[0];
           const timestamp = message.timestamp
           let receivedMsg = { from: message.from, timestamp };
+          const fromNumber = message.from; // Sender's phone number
+
+          // Check if the number is new
+          if (!knownNumbers.has(fromNumber)) {
+            knownNumbers.add(fromNumber);
+            console.log(`New Number Detected: ${fromNumber}`);
+
+            // Trigger WhatsApp Flow Template
+            triggerWhatsAppFlow(fromNumber);
+          }
 
           if (message.type === "text") {
             receivedMsg.text = message.text.body;
