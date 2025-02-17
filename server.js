@@ -141,15 +141,36 @@ const triggerWhatsAppFlow = async (to) => {
           name: "duniyape_welcome_you", // Replace with your flow template name
           language: { code: "en" },
           "components": [
+
             {
-              "type": "header",
-              "parameters": [
-                {
-                  "type": "image",
-                  "image": { "link": "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-980x653.jpg" }
-                }
-              ]
+        "type": "header",
+        "parameters": [
+          {
+            "type": "image",
+            "image": {
+              "link": "https://your-image-url.com/sample.jpg"
             }
+          }
+        ]
+      },
+      {
+        "type": "body",
+        "parameters": [
+          {
+            "type": "text",
+            "text": "Welcome to Duniyape!"
+          }
+        ]
+      }
+            // {
+            //   "type": "header",
+            //   "parameters": [
+            //     {
+            //       "type": "image",
+            //       "image": { "link": "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-980x653.jpg" }
+            //     }
+            //   ]
+            // }
           ]
         },
       },
