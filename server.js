@@ -36,9 +36,11 @@ app.post("/send-message", async (req, res) => {
   } else if (documentUrl) {
     payload.type = "document";
     payload.document = { link: documentUrl }; // Hosted document URL
-  } else {
+  } else if (message) {
     payload.type = "text";
     payload.text = { body: message };
+  } else {
+    return res.status(400).json({ success: false, error: "Message, image, or document is required." });
   }
 
   try {
@@ -55,7 +57,7 @@ app.post("/send-message", async (req, res) => {
 
     const newMessage = {
       to,
-      text: message || "", // Ensure text is not undefined
+      text: message || null,
       imageUrl: imageUrl || null,
       documentUrl: documentUrl || null,
       timestamp: Math.floor(Date.now() / 1000),
@@ -70,6 +72,7 @@ app.post("/send-message", async (req, res) => {
     res.status(500).json({ success: false, error: error.response?.data });
   }
 });
+
 
 
 
