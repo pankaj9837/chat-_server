@@ -148,7 +148,7 @@ const triggerWhatsAppFlow = async (to) => {
           {
             "type": "image",
             "image": {
-              "link": "https://your-image-url.com/sample.jpg"
+              "link": "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-980x653.jpg"
             }
           }
         ]
