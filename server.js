@@ -22,7 +22,7 @@ const receivedMessages = [];
 
 // ✅ 1. API to Send WhatsApp Messages
 app.post("/send-message", async (req, res) => {
-  const { to, message, imageUrl, documentUrl } = req.body; // Accept `imageUrl` for sending images
+  const { to, message, imageUrl, documentUrl } = req.body;
 
   let payload = {
     messaging_product: "whatsapp",
@@ -33,14 +33,12 @@ app.post("/send-message", async (req, res) => {
   if (imageUrl) {
     payload.type = "image";
     payload.image = { link: imageUrl }; // Hosted image URL
+  } else if (documentUrl) {
+    payload.type = "document";
+    payload.document = { link: documentUrl }; // Hosted document URL
   } else {
     payload.type = "text";
     payload.text = { body: message };
-  }
-
-  if(documentUrl){
-    payload.type = "document";
-    payload.image = { link: documentUrl };
   }
 
   try {
@@ -54,20 +52,25 @@ app.post("/send-message", async (req, res) => {
         },
       }
     );
-const newMessage = {
+
+    const newMessage = {
       to,
-      text: message ,
-      imageUrl,
-      documentUrl,
-      timestamp:Math.floor(Date.now() / 1000),
+      text: message || "", // Ensure text is not undefined
+      imageUrl: imageUrl || null,
+      documentUrl: documentUrl || null,
+      timestamp: Math.floor(Date.now() / 1000),
     };
+
     receivedMessages.push(newMessage);
     console.log("New message stored:", newMessage);
+
     res.json({ success: true, response: response.data });
   } catch (error) {
+    console.error("Error sending message:", error.response?.data);
     res.status(500).json({ success: false, error: error.response?.data });
   }
 });
+
 
 
 
