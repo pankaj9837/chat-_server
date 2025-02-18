@@ -147,7 +147,7 @@ const triggerWhatsAppFlow = async (to) => {
           {
             "type": "image",
             "image": {
-              "link": "https://i.pinimg.com/736x/c0/8c/cd/c08ccda2892b18c5d8c31e5a5fc7852d.jpg"
+              "link": "https://media.istockphoto.com/id/1280385511/photo/colorful-background.jpg?s=612x612&w=0&k=20&c=kj0PRQlgvWLzA1-1me6iZp5mlwsZhC4QlcvIEb1J1bs="
             }
           }
         ]
