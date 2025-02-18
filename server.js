@@ -138,8 +138,8 @@ const triggerWhatsAppFlow = async (to) => {
         to,
         type: "template",
         template: {
-          name: "duniyape_welcome_you", // Replace with your flow template name
-          language: { code: "en" },
+          name: "new_temp", // Replace with your flow template name
+          language: { code: "en_US" },
           "components": [
 
             {
