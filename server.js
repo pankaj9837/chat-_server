@@ -193,12 +193,24 @@ app.post("/webhook", async (req, res) => {
   
             // ✅ Handle WhatsApp Flow Response
             if (message.interactive && message.interactive.type === "nfm_reply") {
-              const flowResponse = message.interactive.nfm_reply.response_json;
-              console.log("✅ User submitted flow response:", flowResponse);
-              receivedMsg.flowresponse = flowResponse;
-              // Save response to database or process it
-            }
-  
+                try {
+                  const flowResponse = JSON.parse(message.interactive.nfm_reply.response_json);
+                  console.log("✅ User submitted flow response:", flowResponse);
+    
+                  // Store or process the extracted data
+                  receivedMsg.flowresponse = flowResponse;
+    
+                  // Example: Extract specific values
+                  console.log("User Name:", flowResponse.name);
+                  console.log("User Email:", flowResponse.email);
+                  console.log("Accepted TOS:", flowResponse.tos_optin);
+                  console.log("Marketing Opt-in:", flowResponse.marketing_optin);
+                  console.log("Selected Categories:", flowResponse.categories);
+    
+                } catch (error) {
+                  console.error("❌ Error parsing flow response:", error.message);
+                }
+              }
             // ✅ Handle Text Messages
             if (message.type === "text") {
               receivedMsg.text = message.text.body;
