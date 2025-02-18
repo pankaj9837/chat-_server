@@ -192,8 +192,8 @@ app.post("/webhook", async (req, res) => {
             }
   
             // ✅ Handle WhatsApp Flow Response
-            if (message.interactive && message.interactive.type === "flow") {
-              const flowResponse = message.interactive.flow.response;
+            if (message.interactive && message.interactive.type === "nfm_reply") {
+              const flowResponse = message.interactive.nfm_reply.response_json;
               console.log("✅ User submitted flow response:", flowResponse);
               receivedMsg.flowresponse = flowResponse;
               // Save response to database or process it
