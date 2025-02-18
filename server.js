@@ -132,55 +132,43 @@ const triggerWhatsAppFlow = async (to) => {
   try {
     const response = await axios.post(
       `https://graph.facebook.com/v17.0/${PHONE_NUMBER_ID}/messages`,
+    { 
+    "messaging_product": "whatsapp", 
+    "to": "918959690512", "type": "template", 
+    "template": { 
+        "name": "new_temp", 
+        "language": { 
+            "code": "en_US" 
+            },
+        "components": [
       {
-        messaging_product: "whatsapp",
-        recipient_type: "individual",
-        to,
-        type: "template",
-        template: {
-          name: "new_temp", // Replace with your flow template name
-          language: { code: "en_US" },
-          "components": [
-
-            {
         "type": "header",
         "parameters": [
           {
             "type": "image",
             "image": {
-              "link": "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-980x653.jpg"
+              "link": "https://i.pinimg.com/736x/c0/8c/cd/c08ccda2892b18c5d8c31e5a5fc7852d.jpg"
             }
           }
         ]
       },
       {
-        "type": "body",
-        "parameters": [
-          {
-            "type": "text",
-            "text": "Welcome to Duniyape!"
-          }
-        ]
+        "type": "body"
+        // 
+        // "parameters": [
+        //   {
+        //             "type": "text",
+        //             "text": "this is simple text"
+        //         }
+
+        // ]
       }
-            // {
-            //   "type": "header",
-            //   "parameters": [
-            //     {
-            //       "type": "image",
-            //       "image": { "link": "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-980x653.jpg" }
-            //     }
-            //   ]
-            // }
-          ]
-        },
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+
+    
+    ]
+            
+        } 
+}
 
     console.log("Flow Triggered:", response.data);
   } catch (error) {
