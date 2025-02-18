@@ -172,62 +172,70 @@ const triggerWhatsAppFlow = async (to) => {
 
 
 app.post("/webhook", async (req, res) => {
-  console.log("Received WhatsApp Message:", JSON.stringify(req.body, null, 2));
-
-  if (req.body.object === "whatsapp_business_account") {
-    req.body.entry.forEach((entry) => {
-      entry.changes.forEach((change) => {
-        if (change.value.messages) {
-          const message = change.value.messages[0];
-          const timestamp = message.timestamp
-          let receivedMsg = { from: message.from, timestamp };
-          const fromNumber = message.from; // Sender's phone number
-
-          // Check if the number is new
-          if (!knownNumbers.has(fromNumber)) {
-            knownNumbers.add(fromNumber);
-            console.log(`New Number Detected: ${fromNumber}`);
-
-            // Trigger WhatsApp Flow Template
-            triggerWhatsAppFlow(fromNumber);
-          }
-          if (message.interactive && message.interactive.type === "flow") {
+    console.log("Received WhatsApp Message:", JSON.stringify(req.body, null, 2));
+  
+    if (req.body.object === "whatsapp_business_account") {
+      req.body.entry.forEach((entry) => {
+        entry.changes.forEach((change) => {
+          if (change.value.messages) {
+            const message = change.value.messages[0];
+            const timestamp = message.timestamp;
+            const fromNumber = message.from; // Sender's phone number
+  
+            let receivedMsg = { from: fromNumber, timestamp };
+  
+            // ✅ Check if the number is new & trigger a WhatsApp Flow
+            if (!knownNumbers.has(fromNumber)) {
+              knownNumbers.add(fromNumber);
+              console.log(`🔔 New Number Detected: ${fromNumber}`);
+              triggerWhatsAppFlow(fromNumber);
+            }
+  
+            // ✅ Handle WhatsApp Flow Response
+            if (message.interactive && message.interactive.type === "flow") {
               const flowResponse = message.interactive.flow.response;
-              console.log("User submitted flow response:", flowResponse);
+              console.log("✅ User submitted flow response:", flowResponse);
               receivedMsg.flowresponse = flowResponse;
               // Save response to database or process it
             }
-
-
-          if (message.type === "text") {
-            receivedMsg.text = message.text.body;
-          } else if (message.type === "image") {
-            const mediaId = message.image.id;
-            receivedMsg.imageUrl = `Fetching image...`;
-            fetchWhatsAppMedia(mediaId,"image",(imageUrl) => {
-              receivedMsg.imageUrl = imageUrl;
-            });
-          }else if (message.type === "document") {
-            const mediaId = message.document.id;
-            console.log("Received Document ID:", mediaId);
-
-            // Fetch the document URL
-            fetchWhatsAppMedia(mediaId, "document", (documentUrl) => {
-              console.log("Document URL:", documentUrl);
-              receivedMsg.documentUrl = documentUrl;
-            });
+  
+            // ✅ Handle Text Messages
+            if (message.type === "text") {
+              receivedMsg.text = message.text.body;
+            }
+  
+            // ✅ Handle Image Messages
+            else if (message.type === "image") {
+              const mediaId = message.image.id;
+              receivedMsg.imageUrl = `Fetching image...`;
+  
+              fetchWhatsAppMedia(mediaId, "image", (imageUrl) => {
+                receivedMsg.imageUrl = imageUrl;
+                console.log("📸 Image URL:", imageUrl);
+              });
+            }
+  
+            // ✅ Handle Document Messages
+            else if (message.type === "document") {
+              const mediaId = message.document.id;
+              console.log("📄 Received Document ID:", mediaId);
+  
+              fetchWhatsAppMedia(mediaId, "document", (documentUrl) => {
+                receivedMsg.documentUrl = documentUrl;
+                console.log("📂 Document URL:", documentUrl);
+              });
+            }
+  
+            receivedMessages.push(receivedMsg);
+            console.log("✅ Stored Message:", receivedMsg);
           }
-
-          receivedMessages.push(receivedMsg);
-          console.log("Stored Message:", receivedMsg);
-        }
+        });
       });
-    });
-  }
-
-  res.sendStatus(200);
-});
-
+    }
+  
+    res.sendStatus(200);
+  });
+  
 
 // ✅ 4. API to Retrieve Stored Messages
 app.get("/messages", (req, res) => {
