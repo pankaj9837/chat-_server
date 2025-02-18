@@ -156,8 +156,13 @@ const triggerWhatsAppFlow = async (to) => {
         "type": "body"
       }
     ]
-        } 
-      })
+    }
+},
+{
+    headers: {
+      Authorization: `Bearer ${ACCESS_TOKEN}`
+    },
+  })
     console.log("Flow Triggered:", response.data);
   } catch (error) {
     console.error("Error triggering flow:", error.response?.data || error.message);
