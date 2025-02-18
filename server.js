@@ -199,14 +199,6 @@ app.post("/webhook", async (req, res) => {
     
                   // Store or process the extracted data
                   receivedMsg.flowresponse = flowResponse;
-    
-                  // Example: Extract specific values
-                  console.log("User Name:", flowResponse.name);
-                  console.log("User Email:", flowResponse.email);
-                  console.log("Accepted TOS:", flowResponse.tos_optin);
-                  console.log("Marketing Opt-in:", flowResponse.marketing_optin);
-                  console.log("Selected Categories:", flowResponse.categories);
-    
                 } catch (error) {
                   console.error("❌ Error parsing flow response:", error.message);
                 }
