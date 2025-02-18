@@ -154,18 +154,10 @@ const triggerWhatsAppFlow = async (to) => {
       },
       {
         "type": "body"
-        // 
-        // "parameters": [
-        //   {
-        //             "type": "text",
-        //             "text": "this is simple text"
-        //         }
-
-        // ]
       }
     ]
         } 
-}
+      })
     console.log("Flow Triggered:", response.data);
   } catch (error) {
     console.error("Error triggering flow:", error.response?.data || error.message);
