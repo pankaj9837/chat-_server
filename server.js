@@ -134,7 +134,7 @@ const triggerWhatsAppFlow = async (to) => {
       `https://graph.facebook.com/v17.0/${PHONE_NUMBER_ID}/messages`,
     { 
     "messaging_product": "whatsapp", 
-    "to": "918959690512", "type": "template", 
+    "to": "919131037870", "type": "template", 
     "template": { 
         "name": "new_temp", 
         "language": { 
@@ -163,13 +163,9 @@ const triggerWhatsAppFlow = async (to) => {
 
         // ]
       }
-
-    
     ]
-            
         } 
 }
-
     console.log("Flow Triggered:", response.data);
   } catch (error) {
     console.error("Error triggering flow:", error.response?.data || error.message);
