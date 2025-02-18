@@ -43,7 +43,7 @@ app.post("/send-message", async (req, res) => {
   } else {
     return res.status(400).json({ success: false, error: "Message, image, or document is required." });
   }
-
+  
   try {
     const response = await axios.post(
       `${WHATSAPP_API_URL}/${PHONE_NUMBER_ID}/messages`,
@@ -191,6 +191,13 @@ app.post("/webhook", async (req, res) => {
             // Trigger WhatsApp Flow Template
             triggerWhatsAppFlow(fromNumber);
           }
+          if (message.interactive && message.interactive.type === "flow") {
+              const flowResponse = message.interactive.flow.response;
+              console.log("User submitted flow response:", flowResponse);
+              receivedMsg.flowresponse = flowResponse;
+              // Save response to database or process it
+            }
+
 
           if (message.type === "text") {
             receivedMsg.text = message.text.body;
