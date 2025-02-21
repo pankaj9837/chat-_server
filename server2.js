@@ -22,7 +22,7 @@ app.use(
 );
 
 const { PASSPHRASE = "", PORT = "3000" } = process.env;
-const APP_SECRET = "testing"
+const APP_SECRET = "6f24609f5430d64f8162e96428b7c03f"
 const PRIVATE_KEY = `-----BEGIN PRIVATE KEY-----
 MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDlH+vj8Q/VDk98
 MYRGLPKF18y6P57B9jmqjjFJqXVPPvwun2SFFmPL+Y4el33ye377mDkxrZK0S5jp
