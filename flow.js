@@ -12,24 +12,12 @@ const SCREEN_RESPONSES = {
       data: {
         department: [
           {
-            id: "shopping",
-            title: "Shopping & Groceries",
+            id: "indrajeet",
+            title: "Er. Indrajeet Ajeet",
           },
           {
-            id: "clothing",
-            title: "Clothing & Apparel",
-          },
-          {
-            id: "home",
-            title: "Home Goods & Decor",
-          },
-          {
-            id: "electronics",
-            title: "Electronics & Appliances",
-          },
-          {
-            id: "beauty",
-            title: "Beauty & Personal Care",
+            id: "pankaj",
+            title: "Er. Pankaj Sahu",
           },
         ],
         location: [
