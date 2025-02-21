@@ -70,6 +70,7 @@ const SCREEN_RESPONSES = {
           {
             id: "10:30",
             title: "10:30",
+            enabled: false,
           },
           {
             id: "11:00",
