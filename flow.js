@@ -111,7 +111,7 @@ const SCREEN_RESPONSES = {
           // these fields are disabled initially. Each field is enabled when previous fields are selected
           is_location_enabled: false,
           is_date_enabled: false,
-          is_time_enabled: false,
+          is_time_enabled: true,
         },
       };
     }
