@@ -68,26 +68,26 @@ const SCREEN_RESPONSES = {
       is_date_enabled: true,
       time: [
         {
-          id: "10:30",
-          title: "10:30",
+          id: "10:00",
+          title: "10:00",
         },
         {
           id: "11:00",
-          title: "11:00",
+          title: "11:21",
           enabled: false,
         },
         {
           id: "11:30",
-          title: "11:30",
+          title: "11:31",
         },
         {
           id: "12:00",
-          title: "12:00",
+          title: "12:11",
           enabled: false,
         },
         {
           id: "12:30",
-          title: "12:30",
+          title: "12:11",
         },
       ],
       is_time_enabled: true,
