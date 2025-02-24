@@ -10,35 +10,6 @@ const SCREEN_RESPONSES = {
     APPOINTMENT: {
       screen: "APPOINTMENT",
       data: {
-        department: [
-          {
-            id: "indrajeet",
-            title: "Er. Indrajeet Ajeet",
-          },
-          {
-            id: "pankaj",
-            title: "Er. Pankaj Sahu",
-          },
-        ],
-        location: [
-          {
-            id: "1",
-            title: "King\u2019s Cross, London",
-          },
-          {
-            id: "2",
-            title: "Oxford Street, London",
-          },
-          {
-            id: "3",
-            title: "Covent Garden, London",
-          },
-          {
-            id: "4",
-            title: "Piccadilly Circus, London",
-          },
-        ],
-        is_location_enabled: true,
         date: [
           {
             id: "2024-01-01",
@@ -54,7 +25,7 @@ const SCREEN_RESPONSES = {
           },
         ],
         is_date_enabled: true,
-        time: [
+        Time_slots_90410b: [
           {
             id: "10:45",
             title: "10:45",
@@ -106,22 +77,8 @@ const SCREEN_RESPONSES = {
         phone: "123456789",
         more_details: "A free skin care consultation, please",
       },
-    },
-    TERMS: {
-      screen: "TERMS",
-      data: {},
-    },
-    SUCCESS: {
-      screen: "SUCCESS",
-      data: {
-        extension_message_response: {
-          params: {
-            flow_token: "REPLACE_FLOW_TOKEN",
-            some_param_name: "PASS_CUSTOM_VALUE",
-          },
-        },
-      },
-    },
+    }
+   
   };
   
   export const getNextScreen = async (decryptedBody) => {
