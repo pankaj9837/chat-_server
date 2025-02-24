@@ -138,7 +138,7 @@ const SCREEN_RESPONSES = {
               //TODO: filter each field options based on current selection, here we filter randomly instead
               location: SCREEN_RESPONSES.APPOINTMENT.data.location.slice(0, 3),
               date: SCREEN_RESPONSES.APPOINTMENT.data.date.slice(0, 3),
-              time: SCREEN_RESPONSES.APPOINTMENT.data.time.slice(0, 3),
+              time: SCREEN_RESPONSES.APPOINTMENT.data.Time_slots_90410b.slice(0, 3),
             },
           };
   
