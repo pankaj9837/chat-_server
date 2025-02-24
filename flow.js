@@ -10,21 +10,6 @@ const SCREEN_RESPONSES = {
     APPOINTMENT: {
       screen: "APPOINTMENT",
       data: {
-        date: [
-          {
-            id: "2024-01-01",
-            title: "Mon Jan 01 2024",
-          },
-          {
-            id: "2024-01-02",
-            title: "Tue Jan 02 2024",
-          },
-          {
-            id: "2024-01-03",
-            title: "Wed Jan 03 2024",
-          },
-        ],
-        is_date_enabled: true,
         Time_slots_90410b: [
           {
             id: "10:45",
@@ -51,34 +36,8 @@ const SCREEN_RESPONSES = {
         ],
         is_time_enabled: true,
       },
-    },
-    DETAILS: {
-      screen: "DETAILS",
-      data: {
-        department: "beauty",
-        location: "1",
-        date: "2024-01-01",
-        time: "11:30",
-      },
-    },
-    SUMMARY: {
-      screen: "SUMMARY",
-      data: {
-        appointment:
-          "Beauty & Personal Care Department at Kings Cross, London\nMon Jan 01 2024 at 11:30.",
-        details:
-          "Name: John Doe\nEmail: john@example.com\nPhone: 123456789\n\nA free skin care consultation, please",
-        department: "beauty",
-        location: "1",
-        date: "2024-01-01",
-        time: "11:30",
-        name: "John Doe",
-        email: "john@example.com",
-        phone: "123456789",
-        more_details: "A free skin care consultation, please",
-      },
     }
-   
+
   };
   
   export const getNextScreen = async (decryptedBody) => {
