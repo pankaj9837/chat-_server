@@ -164,9 +164,9 @@ export const getNextScreen = async (decryptedBody) => {
       data: {
         ...SCREEN_RESPONSES.APPOINTMENT.data,
         // these fields are disabled initially. Each field is enabled when previous fields are selected
-        is_location_enabled: false,
-        is_date_enabled: false,
-        is_time_enabled: false,
+        is_location_enabled: true,
+        is_date_enabled: true,
+        is_time_enabled: true,
       },
     };
   }
