@@ -89,10 +89,7 @@ const SCREEN_RESPONSES = {
               // each field is enabled only when previous fields are selected
               is_location_enabled: Boolean(data.department),
               is_date_enabled: Boolean(data.department) && Boolean(data.location),
-              is_time_enabled:
-                Boolean(data.department) &&
-                Boolean(data.location) &&
-                Boolean(data.date),
+              is_time_enabled: true,
   
               //TODO: filter each field options based on current selection, here we filter randomly instead
               location: SCREEN_RESPONSES.APPOINTMENT.data.location.slice(0, 3),
