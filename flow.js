@@ -184,22 +184,10 @@ const SCREEN_RESPONSES = {
         case "APPOINTMENT":
           // update the appointment fields based on current user selection
           return {
-            ...SCREEN_RESPONSES.APPOINTMENT,
+            ...SCREEN_RESPONSES.DETAILS,
             data: {
               // copy initial screen data then override specific fields
-              ...SCREEN_RESPONSES.APPOINTMENT.data,
-              // each field is enabled only when previous fields are selected
-              is_location_enabled: Boolean(data.department),
-              is_date_enabled: Boolean(data.department) && Boolean(data.location),
-              is_time_enabled:
-                Boolean(data.department) &&
-                Boolean(data.location) &&
-                Boolean(data.date),
-  
-              //TODO: filter each field options based on current selection, here we filter randomly instead
-              location: SCREEN_RESPONSES.APPOINTMENT.data.location.slice(0, 3),
-              date: SCREEN_RESPONSES.APPOINTMENT.data.date.slice(0, 3),
-              time: SCREEN_RESPONSES.APPOINTMENT.data.time.slice(0, 3),
+              ...SCREEN_RESPONSES.DETAILS.data,
             },
           };
   
