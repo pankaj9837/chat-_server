@@ -91,6 +91,7 @@ const SCREEN_RESPONSES = {
           },
         ],
         is_time_enabled: true,
+        img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgXvo6blePJ_H53860w9iEX_ffwkX90jZMpA&s"
       },
     },
     DETAILS: {
