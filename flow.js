@@ -72,16 +72,16 @@ const SCREEN_RESPONSES = {
           title: "10:00",
         },
         {
-          id: "11:00",
+          id: "11:21",
           title: "11:21",
           enabled: false,
         },
         {
-          id: "11:30",
+          id: "11:31",
           title: "11:31",
         },
         {
-          id: "12:00",
+          id: "12:11",
           title: "12:11",
           enabled: false,
         },
