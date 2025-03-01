@@ -189,6 +189,7 @@ const SCREEN_RESPONSES = {
             data: {
               // copy initial screen data then override specific fields
               ...SCREEN_RESPONSES.DETAILS.data,
+              ...data
             },
           };
   
