@@ -53,15 +53,15 @@ const SCREEN_RESPONSES = {
         is_location_enabled: true,
         date: [
           {
-            id: "2024-01-01",
+            id: "Mon Jan 01 2024",
             title: "Mon Jan 01 2024",
           },
           {
-            id: "2024-01-02",
+            id: "Tue Jan 02 2024",
             title: "Tue Jan 02 2024",
           },
           {
-            id: "2024-01-03",
+            id: "Wed Jan 03 2024",
             title: "Wed Jan 03 2024",
           },
         ],
