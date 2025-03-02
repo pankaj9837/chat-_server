@@ -187,7 +187,8 @@ const SCREEN_RESPONSES = {
 
           const appointment = `${data.Date_of_appointment_0} at ${data.Time_Slot_1}`;
           
-          const details = `Name: ${data.Patient_Name_2}
+          const details = `
+          Name: ${data.Patient_Name_2}
           Guardian: ${data.Guardian_Name}
           Age: ${data.Age_3}
           Email: ${data.Email_4}
