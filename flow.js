@@ -184,46 +184,57 @@ const SCREEN_RESPONSES = {
         // handles when user interacts with APPOINTMENT screen
         case "APPOINTMENT":
           // update the appointment fields based on current user selection
+
+          const appointment = `${data.Date_of_appointment_0} at ${data.Time_Slot_1}`;
+          
+          const details = `Name: ${data.Patient_Name_2}
+          Guardian: ${data.Guardian_Name}
+          Age: ${data.Age_3}
+          Email: ${data.Email_4}
+          Symptoms: ${data.Other_Symptoms_5}`;
           return {
             ...SCREEN_RESPONSES.DETAILS,
+
             data: {
               // copy initial screen data then override specific fields
               ...SCREEN_RESPONSES.DETAILS.data,
+              appointment,
+              details,
               ...data
             },
           };
   
-        // handles when user completes DETAILS screen
-        case "DETAILS":
-          // the client payload contains selected ids from dropdown lists, we need to map them to names to display to user
-          const departmentName =
-            SCREEN_RESPONSES.APPOINTMENT.data.department.find(
-              (dept) => dept.id === data.department
-            ).title;
-          const locationName = SCREEN_RESPONSES.APPOINTMENT.data.location.find(
-            (loc) => loc.id === data.location
-          ).title;
-          const dateName = SCREEN_RESPONSES.APPOINTMENT.data.date.find(
-            (date) => date.id === data.date
-          ).title;
+//         // handles when user completes DETAILS screen
+//         case "DETAILS":
+//           // the client payload contains selected ids from dropdown lists, we need to map them to names to display to user
+//           const departmentName =
+//             SCREEN_RESPONSES.APPOINTMENT.data.department.find(
+//               (dept) => dept.id === data.department
+//             ).title;
+//           const locationName = SCREEN_RESPONSES.APPOINTMENT.data.location.find(
+//             (loc) => loc.id === data.location
+//           ).title;
+//           const dateName = SCREEN_RESPONSES.APPOINTMENT.data.date.find(
+//             (date) => date.id === data.date
+//           ).title;
   
-          const appointment = `${departmentName} at ${locationName}
-  ${dateName} at ${data.time}`;
+//           const appointment = `${departmentName} at ${locationName}
+//   ${dateName} at ${data.time}`;
   
-          const details = `Name: ${data.name}
-  Email: ${data.email}
-  Phone: ${data.phone}
-  "${data.more_details}"`;
+//           const details = `Name: ${data.name}
+//   Email: ${data.email}
+//   Phone: ${data.phone}
+//   "${data.more_details}"`;
   
-          return {
-            ...SCREEN_RESPONSES.SUMMARY,
-            data: {
-              appointment,
-              details,
-              // return the same fields sent from client back to submit in the next step
-              ...data,
-            },
-          };
+//           return {
+//             ...SCREEN_RESPONSES.SUMMARY,
+//             data: {
+//               appointment,
+//               details,
+//               // return the same fields sent from client back to submit in the next step
+//               ...data,
+//             },
+//           };
   
         // handles when user completes SUMMARY screen
         case "SUMMARY":
