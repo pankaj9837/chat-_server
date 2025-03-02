@@ -187,8 +187,12 @@ const SCREEN_RESPONSES = {
 
           const appointment = `${data.Date_of_appointment_0} at ${data.Time_Slot_1}`;
           
-          const details = `Name: ${data.Patient_Name_2}/nGuardian: ${data.Guardian_Name}/nAge: ${data.Age_3}/nEmail: ${data.Email_4}/nSymptoms: ${data.Other_Symptoms_5}`;
-          return {
+          const details = `Name: ${data.Patient_Name_2}
+Guardian: ${data.Guardian_Name}
+Age: ${data.Age_3}
+Email: ${data.Email_4}
+Symptoms: ${data.Other_Symptoms_5}`;
+              return {
             ...SCREEN_RESPONSES.DETAILS,
 
             data: {
