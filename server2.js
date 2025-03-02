@@ -124,21 +124,32 @@ app.listen(PORT, () => {
 });
 
 function isRequestSignatureValid(req) {
-  if(!APP_SECRET) {
-    console.warn("App Secret is not set up. Please Add your app secret in /.env file to check for request validation");
+if (!APP_SECRET) {
+    console.warn("App Secret is not set. Please add it in the .env file.");
     return true;
   }
 
   const signatureHeader = req.get("x-hub-signature-256");
-  const signatureBuffer = Buffer.from(signatureHeader.replace("sha256=", ""), "utf-8");
+  if (!signatureHeader) {
+    console.error("Missing x-hub-signature-256 header");
+    return false;
+  }
+
+  const signatureBuffer = Buffer.from(signatureHeader.replace("sha256=", ""), "hex");
+
+  if (!req.rawBody) {
+    console.error("Error: req.rawBody is undefined. Ensure middleware is set up correctly.");
+    return false;
+  }
 
   const hmac = crypto.createHmac("sha256", APP_SECRET);
-  const digestString = hmac.update(req.rawBody).digest('hex');
-  const digestBuffer = Buffer.from(digestString, "utf-8");
+  const digestString = hmac.update(req.rawBody).digest("hex");
+  const digestBuffer = Buffer.from(digestString, "hex");
 
-  if ( !crypto.timingSafeEqual(digestBuffer, signatureBuffer)) {
+  if (!crypto.timingSafeEqual(digestBuffer, signatureBuffer)) {
     console.error("Error: Request Signature did not match");
     return false;
   }
+
   return true;
 }
