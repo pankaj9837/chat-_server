@@ -197,6 +197,18 @@ const SCREEN_RESPONSES = {
         case "APPOINTMENT":
           // update the appointment fields based on current user selection
 
+          if(data.trigger==="Date_selected"){
+            return {
+                ...SCREEN_RESPONSES.APPOINTMENT,
+    
+                data: {
+                  // copy initial screen data then override specific fields
+                  ...SCREEN_RESPONSES.APPOINTMENT.data,
+                  date:resdate,
+                },
+              };
+          }
+
           const appointment = `${data.Date_of_appointment_0} at ${data.Time_Slot_1}`;
           
           const details = `Name: ${data.Patient_Name_2}
