@@ -59,6 +59,7 @@ const SCREEN_RESPONSES = {
           {
             id: "Tue Jan 02 2024",
             title: "Tue Jan 02 2024",
+            enabled: false,
           },
           {
             id: "Wed Jan 03 2024",
