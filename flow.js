@@ -197,7 +197,7 @@ const SCREEN_RESPONSES = {
         case "APPOINTMENT":
           // update the appointment fields based on current user selection
 
-          if(data.trigger==="Date_selected"){
+          if(data.trigger === "Date_selected"){
             return {
                 ...SCREEN_RESPONSES.APPOINTMENT,
     
