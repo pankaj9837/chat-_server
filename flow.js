@@ -149,11 +149,12 @@ const SCREEN_RESPONSES = {
   export const getNextScreen = async (decryptedBody) => {
     const { screen, data, version, action, flow_token } = decryptedBody;
 
-    const getdata=async()=>{
-        let res=await axios.get('https://api.duniyatech.com/WhatsApp-cloud-api/fatch_date_and_time/date')
+    const getdata=async(search)=>{
+        let res=await axios.get(`https://api.duniyatech.com/WhatsApp-cloud-api/fatch_date_and_time/${search}`)
         console.log(res.data)
         return res.data
     }
+   
 
     // handle health check request
     if (action === "ping") {
@@ -176,16 +177,15 @@ const SCREEN_RESPONSES = {
   
     // handle initial request when opening the flow and display APPOINTMENT screen
     if (action === "INIT") {
-       let resdate= await getdata()
+       let resdate= await getdata('date')
       return {
         ...SCREEN_RESPONSES.APPOINTMENT,
         data: {
           ...SCREEN_RESPONSES.APPOINTMENT.data,
           date:resdate,
           // these fields are disabled initially. Each field is enabled when previous fields are selected
-          is_location_enabled: true,
           is_date_enabled: true,
-          is_time_enabled: true,
+          is_time_enabled: false,
         },
       };
     }
@@ -198,12 +198,15 @@ const SCREEN_RESPONSES = {
           // update the appointment fields based on current user selection
 
           if(data.trigger === "Date_selected"){
+            const restime= await getdata(data.Date_of_appointment)
             return {
                 ...SCREEN_RESPONSES.APPOINTMENT,
     
                 data: {
                   // copy initial screen data then override specific fields
                   ...SCREEN_RESPONSES.APPOINTMENT.data,
+                  time:restime,
+                  is_time_enabled: true
                 },
               };
           }
