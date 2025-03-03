@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import axios from "axios";
+
 // this object is generated from Flow Builder under "..." > Endpoint > Snippets > Responses
 const SCREEN_RESPONSES = {
     APPOINTMENT: {
@@ -51,21 +53,20 @@ const SCREEN_RESPONSES = {
           },
         ],
         is_location_enabled: true,
-        date: [
-          {
-            id: "Mon Jan 01 2024",
-            title: "Mon Jan 01 2024",
-          },
-          {
-            id: "Tue Jan 02 2024",
-            title: "Tue Jan 02 2024",
-            enabled: false,
-          },
-          {
-            id: "Wed Jan 03 2024",
-            title: "Wed Jan 03 2024",
-          },
-        ],
+        // date: [
+        //   {
+        //     id: "2024-01-01",
+        //     title: "Mon Jan 01 2024",
+        //   },
+        //   {
+        //     id: "2024-01-02",
+        //     title: "Tue Jan 02 2024",
+        //   },
+        //   {
+        //     id: "2024-01-03",
+        //     title: "Wed Jan 03 2024",
+        //   },
+        // ],
         is_date_enabled: true,
         time: [
           {
@@ -143,9 +144,17 @@ const SCREEN_RESPONSES = {
       },
     },
   };
+
   
   export const getNextScreen = async (decryptedBody) => {
     const { screen, data, version, action, flow_token } = decryptedBody;
+
+    const getdata=async()=>{
+        let res=await axios.get('https://api.duniyatech.com/WhatsApp-cloud-api/fatch_date_and_time/date')
+        console.log(res.data)
+        return res.data
+    }
+
     // handle health check request
     if (action === "ping") {
       return {
@@ -158,7 +167,7 @@ const SCREEN_RESPONSES = {
     // handle error notification
     if (data?.error) {
       console.warn("Received client error:", data);
-      return {
+      return {      
         data: {
           acknowledged: true,
         },
@@ -167,10 +176,12 @@ const SCREEN_RESPONSES = {
   
     // handle initial request when opening the flow and display APPOINTMENT screen
     if (action === "INIT") {
+       let resdate= await getdata()
       return {
         ...SCREEN_RESPONSES.APPOINTMENT,
         data: {
           ...SCREEN_RESPONSES.APPOINTMENT.data,
+          date:resdate,
           // these fields are disabled initially. Each field is enabled when previous fields are selected
           is_location_enabled: true,
           is_date_enabled: true,
@@ -193,7 +204,7 @@ Guardian: ${data.Guardian_Name}
 Age: ${data.Age_3}
 Email: ${data.Email_4}
 Symptoms: ${data.Other_Symptoms_5}`;
-              return {
+          return {
             ...SCREEN_RESPONSES.DETAILS,
 
             data: {
