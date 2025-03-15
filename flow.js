@@ -215,9 +215,12 @@ const SCREEN_RESPONSES = {
           
           const details = `Name: ${data.Patient_Name_2}
 Guardian: ${data.Guardian_Name}
+DOB: ${data.Date_Of_Birth}
 Age: ${data.Age_3}
 Email: ${data.Email_4}
-Symptoms: ${data.Other_Symptoms_5}`;
+Symptoms: ${data.Other_Symptoms_5}
+City: ${data.City}
+Address: ${data.Address}`;
           return {
             ...SCREEN_RESPONSES.DETAILS,
 
